@@ -4,7 +4,7 @@ import io.vertx.core.AbstractVerticle;
 
 public class MainVerticle extends AbstractVerticle {
 
-    private String[] args;
+    private final String[] args;
 
     public MainVerticle(String[] args) {
         this.args = args;

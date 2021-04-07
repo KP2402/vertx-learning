@@ -1,12 +1,14 @@
 apply plugin: 'java-library'
 apply plugin: 'application'
+apply plugin: "org.beryx.jlink"
 //apply plugin: 'org.gradle.java.experimental-jigsaw'
 //apply plugin: 'com.dua3.gradle.jpms'
 
-/*buildscript {
+buildscript {
     dependencies {
         //classpath 'com.dua3.gradle.jpms:JpmsGradlePlugin:1.1.5'
         //classpath "gradle.plugin.org.gradle.java:experimental-jigsaw:0.1.1"
+        classpath "org.beryx:badass-jlink-plugin:2.23.3"
     }
     repositories {
         maven {
@@ -14,7 +16,7 @@ apply plugin: 'application'
         }
         mavenCentral()
     }
-}*/
+}
 
 repositories {
     mavenCentral()
@@ -74,5 +76,18 @@ java.modularity.inferModulePath.set(true)
 
 application.mainModule.set('org.example.kp')
 application.mainClass.set('org.example.kp.DeployMainVerticle')
+
+jlink {
+    mergedModule {
+        requires "java.naming"
+        requires "java.logging"
+        uses "io.vertx.core.spi.VerticleFactory"
+    }
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    launcher{
+        name = 'mainVerticle'
+        //jvmArgs = ['-Dlog4j.configurationFile=./log4j2.xml']
+    }
+}
 
 
